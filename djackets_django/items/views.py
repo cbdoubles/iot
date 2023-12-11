@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 # Create your views here.
 from .serializer import ItemSerializer #tell django what we will get from this model
-from .models import Product, DBox, Box
+from .models import Product, DBox, Box, User
 
 #imports for Create Product
 from django.utils import timezone
@@ -17,6 +17,15 @@ import os  # Import the os module to manage file operations when deleting photos
 
 
 ### TO BE IMPLEMENTED - view returning TRUE, FALSE for user ###
+
+class CheckUserExists(APIView):
+    def post(self, request, format=None):
+        nfc_number = request.data.get('nfc_number')
+
+        # Check if the given nfc_number exists in the database
+        user_exists = User.objects.filter(nfc_number=nfc_number).exists()
+
+        return Response({user_exists}, status=status.HTTP_200_OK)
 
 ### PICK-UP ITEMS ###
 
