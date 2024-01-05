@@ -8,7 +8,7 @@ from PIL import Image
 import uuid #to create uuid
 
 
-### TO BE IMPLEMENTED - USER DATABASE ###
+### USER DATABASE ###
 
 class User(models.Model):
     unique_ID = models.CharField(max_length=100, null=True, blank=True, unique=True, default=uuid.uuid4())
@@ -54,8 +54,6 @@ class Box(models.Model):
 class Product(models.Model):
     unique_ID = models.CharField(max_length=100, null=True, blank=True, unique=True, default=uuid.uuid4())
     category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE, blank=True, null=True)
-    #on_delete - if delete product also delete all products connected to it
-    #related_name if do cateogry, easy to get all products by saying category.product.all()
     title = models.TextField(verbose_name=("title"), help_text=("Required"), max_length=255)
     slug = models.SlugField()
     description = models.TextField(verbose_name=("description"), help_text=("Not Required"), blank=True, null=True)
