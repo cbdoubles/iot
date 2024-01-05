@@ -7,7 +7,8 @@ urlpatterns = [
     # path('createNew', views.enterProduct.as_view()),
     path('latest-products/<str:dbox_id>/', views.DBoxProductsList.as_view()),
     path('api/create-product/', views.CreateProduct.as_view(), name='create_product'),
-    path('products/<slug:item_slug>/<slug:product_slug>/', views.ProductDetail.as_view()),
+    # path('products/<slug:item_slug>/<slug:product_slug>/', views.ProductDetail.as_view()),
+    path('boxes/<slug:box_unique_id>/product/', views.ProductDetail.as_view(), name='product-detail'),
     
     #info received from tablet
     path('check-free-box/', views.CheckAvailableBox.as_view(), name='check_free_box'),

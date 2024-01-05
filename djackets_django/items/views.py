@@ -3,6 +3,7 @@ from django.http import Http404
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 from .serializer import ItemSerializer #tell django what we will get from this model
@@ -41,15 +42,24 @@ class DBoxProductsList(APIView):
         except DBox.DoesNotExist:
             return Response({"error": "DBox does not exist"}, status=404)
 
-class ProductDetail(APIView):
-    def get_object(self, item_slug, product_slug):
-        try:
-            return Product.objects.filter(item__slug=item_slug).get(slug=product_slug) #filter any product inside category
-        except Product.DoesNotExist:
-            raise Http404
+# class ProductDetail(APIView):
+#     def get_object(self, item_slug, product_slug):
+#         try:
+#             return Product.objects.filter(item__slug=item_slug).get(slug=product_slug) #filter any product inside category
+#         except Product.DoesNotExist:
+#             raise Http404
         
-    def get(self, request, item_slug, product_slug, format=None):
-        item = self.get_object(item_slug, product_slug)
+#     def get(self, request, item_slug, product_slug, format=None):
+#         item = self.get_object(item_slug, product_slug)
+#         serializer = ItemSerializer(item)
+#         return Response(serializer.data)
+
+class ProductDetail(APIView):
+    def get_object(self, box_unique_id):
+        return get_object_or_404(Product, box__unique_ID=box_unique_id)
+
+    def get(self, request, box_unique_id, format=None):
+        item = self.get_object(box_unique_id)
         serializer = ItemSerializer(item)
         return Response(serializer.data)
 
@@ -57,7 +67,7 @@ class boxItems(APIView):
     class ProductDetail(APIView):
         def get_object(self, item_slug, dbox_slug):
             try:
-                return Product.objects.filter(item__slug=item_slug).get(slug=dbox_slug) #filter any product inside category
+                return Product.objects.filter(item__slug=item_slug).get(slug=dbox_slug) #filter for product in box
             except Product.DoesNotExist:
                 raise Http404
         def get(self, request, item_slug, product_slug, format=None):
@@ -72,8 +82,8 @@ class DeleteProduct(APIView):
             box_id = request.data.get('box_id')
 
             # Get product from box
-            dbox = DBox.objects.get(id=dbox_id)
-            box = Box.objects.get(id=box_id, dbox=dbox)
+            dbox = DBox.objects.get(unique_ID=dbox_id)
+            box = Box.objects.get(unique_ID=box_id, dbox=dbox)
             product = Product.objects.get(box=box)
             
             if product.image:
@@ -98,9 +108,9 @@ class CheckAvailableBox(APIView):
         free_box = Box.objects.filter(isFree=True).first()
 
         if free_box:
-            return Response({'box_num': free_box.box_num}, status=status.HTTP_200_OK)
+            return Response({'unique_ID': free_box.unique_ID, 'box_num': free_box.box_num}, status=status.HTTP_200_OK)
         else:
-            return Response({'box_num': -1}, status=status.HTTP_200_OK)
+            return Response({'unique_ID': None, 'box_num': -1}, status=status.HTTP_200_OK)
 
 class CreateProduct(APIView):
     def post(self, request, format=None):

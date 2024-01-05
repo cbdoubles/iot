@@ -1,5 +1,6 @@
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from django.utils.text import slugify
 from django.db import models
 from django.core.files import File #import so it is easier to correct thumbnails
 
@@ -53,7 +54,8 @@ class Box(models.Model):
     #addProduct 
 class Product(models.Model):
     unique_ID = models.CharField(max_length=100, null=True, blank=True, unique=True, default=uuid.uuid4())
-    category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE, blank=True, null=True)
+    box = models.OneToOneField(Box, default=None, on_delete=models.CASCADE)
+    # category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE, blank=True, null=True)
     title = models.TextField(verbose_name=("title"), help_text=("Required"), max_length=255)
     slug = models.SlugField()
     description = models.TextField(verbose_name=("description"), help_text=("Not Required"), blank=True, null=True)
@@ -61,13 +63,17 @@ class Product(models.Model):
     image = models.ImageField(upload_to='uploads/', blank=True, null=True) #to make mandatory in future
     thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    box = models.OneToOneField(Box, default=None, on_delete=models.CASCADE)
     
     class Meta:
         ordering = ('title',) 
         
     def __str__(self): 
         return self.title
+    
+    def save(self, *args, **kwargs):
+        # Set the slug to the unique_ID of the associated Box
+        self.slug = slugify(self.box.unique_ID)
+        super().save(*args, **kwargs)
     
     def get_absolute_url(self): 
         return f'/{self.slug}/' #get slug based on item field
@@ -98,6 +104,11 @@ class Product(models.Model):
         
         return thumbnail
     
+    def box_num(self):
+        return self.box.box_num if self.box else None
+    
+    def box_num_property(self):
+         return self.box.unique_ID if self.box.unique_ID is not None else None
 
     
     """

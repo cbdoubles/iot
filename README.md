@@ -15,7 +15,7 @@ When you want to set up a superuser/ admin
  - current admin details: [username: admin@djackets.com, email: admin@jackets.com, password: IoTpass1])
 
 Do the following commands when you make changes to the Django code:
- - py manage.py make migrations (create migration files)
+ - py manage.py makemigrations (create migration files)
  - py manage.py migrate (we have a new database with all these tables).
 
 Start development server (this hosts the database)
@@ -25,3 +25,4 @@ Start development server (this hosts the database)
 Website pages you can check:
  - http://127.0.0.1:8000/api/v1/check-free-box/
  - http://127.0.0.1:8000/api/v1/latest-products/1A/
+ - http://127.0.0.1:8000/api/v1/boxes/1A2/product/

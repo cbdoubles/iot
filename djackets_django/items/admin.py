@@ -19,11 +19,8 @@ class ProductAdmin(admin.ModelAdmin):
 
         # Call the original delete_model method to delete the product
         super().delete_model(request, obj)
-
-        # Check if the Box is now empty, and update as needed
-        if box and box.product_set.count() == 0:
-            box.isFree = True
-            box.save()
+        box.isFree = True
+        box.save()
     
 
 admin.site.register(Category)
