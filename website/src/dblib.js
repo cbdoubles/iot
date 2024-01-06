@@ -96,7 +96,24 @@ const dblib = {
       } finally {
         this.isLoading = false;
       }
-    }
+    },
+    
+    async deleteProduct(product) {
+      // const productId = product.pid;  // Assuming you have an 'id' property in your product data
+      try {
+        console.log('deleteProduct: box_id');
+        console.log(product);
+        console.log(product.box_id);
+        const response = await axios.post(`${this.database}/api/v1/delete-product/`, { box_id: product.box_id });
+        console.log('made response');
+        console.log(response.data.message);  // Log the server response
+          // Optionally, you can perform additional actions based on the response
+      } catch (error) {
+          console.error('Error deleting product:', error);
+          // Optionally, you can handle the error, show a message, etc.
+      }
+    },
+
   },
 }
 

@@ -44,8 +44,6 @@ export default {
 
     methods: {
         viewProduct(item) {
-            console.log('print in shopview');
-            console.log(item.box_id);
             this.$router.push({path: `/item/${item.box_id}`, query: {pid: item.box_id}})
         }
     },

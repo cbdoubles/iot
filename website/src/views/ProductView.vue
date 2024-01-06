@@ -1,57 +1,78 @@
 <template>
-    <template v-if="isLoading">
-        <img :src=loadingImage style="max-width: 40%;">
-    </template>
+    <div>
+        <template v-if="isLoading">
+            <img :src=loadingImage style="max-width: 40%;">
+        </template>
 
-    <template v-else>
-        <div>
-            <div class="back-btn" @click="$router.go(-1)"> back </div>
-            <main class="container">
+        <template v-else>
+            <div>
+                <div class="back-btn" @click="$router.go(-1)"> back </div>
+                <main class="container">
 
-                <!-- Left Column / Headphones Image -->
-                <div class="left-column">
-                    <img class="active" :src="product.get_image" alt="">
-                </div>
-
-
-                <!-- Right Column -->
-                <div class="right-column">
-
-                    <!-- Product Description -->
-                    <div class="product-description">
-                        <span> Category </span>
-                        <h1> {{ product.product }}</h1>
-                        <p> {{ product.description }}</p>
+                    <!-- Left Column / Headphones Image -->
+                    <div class="left-column">
+                        <img class="active" :src="product.get_image" alt="">
                     </div>
 
 
-                    <!-- Product Pricing -->
-                    <div class="product-price">
-                        <span> ☻☻</span>
-                        <a href="#" class="cart-btn">Add to cart</a>
+                    <!-- Right Column -->
+                    <div class="right-column">
+
+                        <!-- Product Description -->
+                        <div class="product-description">
+                            <span> Category </span>
+                            <h1> {{ product.product }}</h1>
+                            <p> {{ product.description }}</p>
+                        </div>
+
+
+                        <!-- Product Pricing -->
+                        <div class="product-price">
+                            <span> ☻☻</span>
+                            <button @click="takeProduct" class="cart-btn">Take Product</button>
+                        </div>
                     </div>
-                </div>
-            </main>
-        </div>
-    </template>
+                </main>
+                <PopupBox ref="popupBox" />
+            </div>
+        </template>
+    </div>
 </template>
 
 
 
 <script>
 import dblib from '@/dblib'
+import PopupBox from '@/components/PopupBox.vue';
 
 
 export default ({
+    components: {
+        PopupBox,
+    },
 
     data() {
         return {
             product: [],
             isLoading: false,
-            productDataLoaded: false, //adding to allow waiting for product data
+            popupMessage: '',
+            popupVisible: false,
         }
     },
     mixins: [dblib],
+
+    methods: {
+        async takeProduct() {
+            await this.showPopup(`Go to Box ${this.product.box_number} to collect your item!`);
+            await this.deleteProduct(this.product);
+            this.$router.push({path: `/login`});
+        },
+
+        async showPopup(message) {
+            // Access the showPopup method of the PopupBox component
+            await this.$refs.popupBox.showPopup(message);
+        },
+    },
 
     computed: {
         loadingImage() {
@@ -62,11 +83,8 @@ export default ({
     async created() {
         const productId = this.$route.params.pid
         try {
-            console.log('productId');
-            console.log(productId);
             this.isLoading = true;
-            this.product = await this.getProduct(productId);
-            console.log(this.product);
+            this.product = await this.getProduct(productId);            
         } catch (error) {
             console.error('Error fetching product:', error);
         } finally {

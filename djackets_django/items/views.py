@@ -78,19 +78,16 @@ class boxItems(APIView):
 class DeleteProduct(APIView):
     def post(self, request, format=None):
             # Assuming you are sending DBox ID and Box ID in the request data
-            dbox_id = request.data.get('dbox_id')
             box_id = request.data.get('box_id')
 
             # Get product from box
-            dbox = DBox.objects.get(unique_ID=dbox_id)
-            box = Box.objects.get(unique_ID=box_id, dbox=dbox)
+            box = Box.objects.get(unique_ID=box_id)
             product = Product.objects.get(box=box)
             
             if product.image:
                 os.remove(product.image.path)  # Delete the main image file
             if product.thumbnail:
                 os.remove(product.thumbnail.path)  # Delete the thumbnail file
-
 
             # Delete the product and return confirmation
             product.delete()

@@ -12,7 +12,7 @@ urlpatterns = [
     
     #info received from tablet
     path('check-free-box/', views.CheckAvailableBox.as_view(), name='check_free_box'),
-    path('api/delete-product/', views.DeleteProduct.as_view(), name='delete_product'),
+    path('delete-product/', views.DeleteProduct.as_view(), name='delete_product'),
     path('check_user_exists/', views.CheckUserExists.as_view(), name='check_user_exists'),
 ]
 #need to import this to the other urls in main folder
