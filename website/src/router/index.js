@@ -21,7 +21,7 @@ const routes = [
     component: ShopView,
   },
   {
-    path: '/item',
+    path: '/item/:pid',
     name: 'item',
     component: ProductView,
   },

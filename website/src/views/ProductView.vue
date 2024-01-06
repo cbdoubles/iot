@@ -5,12 +5,12 @@
 
     <template v-else>
         <div>
-            <div class="back-btn" @click="this.$router.go(-1)"> back </div>
+            <div class="back-btn" @click="$router.go(-1)"> back </div>
             <main class="container">
 
                 <!-- Left Column / Headphones Image -->
                 <div class="left-column">
-                    <img class="active" :src="this.product.image" alt="">
+                    <img class="active" :src="product.get_image" alt="">
                 </div>
 
 
@@ -20,8 +20,8 @@
                     <!-- Product Description -->
                     <div class="product-description">
                         <span> Category </span>
-                        <h1> {{ this.product.product }}</h1>
-                        <p> {{ this.product.description }}</p>
+                        <h1> {{ product.product }}</h1>
+                        <p> {{ product.description }}</p>
                     </div>
 
 
@@ -33,7 +33,6 @@
                 </div>
             </main>
         </div>
-
     </template>
 </template>
 
@@ -49,8 +48,10 @@ export default ({
         return {
             product: [],
             isLoading: false,
+            productDataLoaded: false, //adding to allow waiting for product data
         }
     },
+    mixins: [dblib],
 
     computed: {
         loadingImage() {
@@ -58,12 +59,21 @@ export default ({
         },
     },
 
-    created() {
-        dblib.getProduct(this.$route.query.test)
-            .then(response => this.product = response)
-        console.log(this.product)
+    async created() {
+        const productId = this.$route.params.pid
+        try {
+            console.log('productId');
+            console.log(productId);
+            this.isLoading = true;
+            this.product = await this.getProduct(productId);
+            console.log(this.product);
+        } catch (error) {
+            console.error('Error fetching product:', error);
+        } finally {
+            this.isLoading = false;
+            this.productDataLoaded = true;
+        }
     },
-    mixins: [dblib]
 
 })
 </script>

@@ -6,7 +6,8 @@ const dblib = {
       isLoading: false,
       rfid: -1,
       arduino: 'http://192.168.178.157',
-      database: 'localhost:####',
+      database: 'http://127.0.0.1:8000',
+      // database: 'localhost:####',
       products: [],
     }
   },
@@ -50,35 +51,53 @@ const dblib = {
           console.log(error)
         })
     },
-  },
 
   // Get items from the database, store them in
   // products.
-  async getItems() {
-    this.isLoading = true
-    axios.get(this.database + '/items')
-      .then(response => response.json())
-      .then(json => {
-        this.products = json
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    this.isLoading = false
-  },
+    // async getItems() {
+    //   this.isLoading = true
+    //   // axios.get(this.database + '/items')
+    //   axios.get(this.database + '/api/v1/latest-products/')
+    //     .then(response => response.json())
+    //     .then(json => {
+    //       this.products = json
+    //     })
+    //     .catch(error => {
+    //       console.log(error)
+    //     })
+    //   this.isLoading = false
+    // },
 
-  // get a singular product from the database
-  async getProduct(pid) {
-    this.isLoading = true
-    axios.get(this.database + '/items?' + pid)
-      .then(response => response.json())
-      .then(json => this.product = json.data)
-      .catch(error => {
-        console.log(error)
-      })
-      this.isLoading = false
-      return {pid: 1, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description that is way too'}
-  }
+    async getItems() {
+      this.isLoading = true;
+    
+      try {
+        const response = await axios.get(this.database + '/api/v1/latest-products/');
+        this.products = response.data;
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+  
+    // get a singular product from the database
+    async getProduct(pid) {
+      try {
+        this.isLoading = true;
+    
+        const response = await axios.get(`${this.database}/api/v1/boxes/product/${pid}`);
+        this.product = response.data;
+    
+        return response.data;  // Return the data received from the endpoint
+      } catch (error) {
+        console.error('Error fetching product:', error);
+        // return {pid: 1, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description that is way too'};
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  },
 }
 
 export default dblib

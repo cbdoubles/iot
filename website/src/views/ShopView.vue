@@ -7,12 +7,14 @@
 
     <template v-else>
         <div class="grid-container">
-            <div v-for="(item) in products" :key="item.pid">
+            <div v-for="(item) in products" :key="item.box_id">
                 <ProductCard 
-                :product="item.product"
-                :image="item.image"
+                :pid="item.box_id"
+                :box_num="item.box_num"
+                :product="item.title"
                 :description="item.description"
-                :pid="item.pid"
+                :image="item.get_image"
+                :thumbnail="item.get_thumbnail"
                 @viewItem="viewProduct(item)" />
             </div>
         </div>
@@ -35,34 +37,30 @@ export default {
     data() {
         return {
             isLoading: false,
-            products: [ 
-            {pid: 1, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description that is way too looooooooooooooooooooooooooooooooooooooooooong!'},
-            {pid: 2, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'},
-            {pid: 3, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'},
-            {pid: 4, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'},
-            {pid: 5, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'},
-            {pid: 6, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'},
-            {pid: 7, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'}, 
-            {pid: 8, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'},
-            {pid: 9, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'},
-            {pid: 10, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'},
-            {pid: 11, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'},
-            {pid: 12, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description!'},
-        ],
+            products:[],
         }
     },
     mixins: [dblib],
 
     methods: {
         viewProduct(item) {
-            this.$router.push({path: '/item', query: {pid: item.pid}})
+            console.log('print in shopview');
+            console.log(item.box_id);
+            this.$router.push({path: `/item/${item.box_id}`, query: {pid: item.box_id}})
         }
     },
     computed: {
         loadingImage() {
             return require('@/assets/loading.gif')
         }
-    }
+    },
+
+    async created() {
+    // Call getItems when the component is created
+        this.getItems();
+  }
+
+    
 }
 </script>
     

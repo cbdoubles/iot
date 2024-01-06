@@ -104,10 +104,10 @@ class Product(models.Model):
         
         return thumbnail
     
-    def box_num(self):
+    def get_box_num(self):
         return self.box.box_num if self.box else None
     
-    def box_num_property(self):
+    def get_box_property(self):
          return self.box.unique_ID if self.box.unique_ID is not None else None
 
     
