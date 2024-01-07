@@ -56,7 +56,7 @@ export default {
     async created() {
     // Call getItems when the component is created
         this.getItems();
-  }
+    }
 
     
 }

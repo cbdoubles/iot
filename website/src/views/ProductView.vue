@@ -21,7 +21,7 @@
                         <!-- Product Description -->
                         <div class="product-description">
                             <span> Category </span>
-                            <h1> {{ product.product }}</h1>
+                            <h1> {{ product.title }}</h1>
                             <p> {{ product.description }}</p>
                         </div>
 
@@ -84,12 +84,12 @@ export default ({
         const productId = this.$route.params.pid
         try {
             this.isLoading = true;
-            this.product = await this.getProduct(productId);            
+            this.product = await this.getProduct(productId);
+            console.log(this.product);          
         } catch (error) {
             console.error('Error fetching product:', error);
         } finally {
             this.isLoading = false;
-            this.productDataLoaded = true;
         }
     },
 

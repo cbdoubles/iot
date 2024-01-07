@@ -52,22 +52,7 @@ const dblib = {
         })
     },
 
-  // Get items from the database, store them in
-  // products.
-    // async getItems() {
-    //   this.isLoading = true
-    //   // axios.get(this.database + '/items')
-    //   axios.get(this.database + '/api/v1/latest-products/')
-    //     .then(response => response.json())
-    //     .then(json => {
-    //       this.products = json
-    //     })
-    //     .catch(error => {
-    //       console.log(error)
-    //     })
-    //   this.isLoading = false
-    // },
-
+  // Get items from the database, store them in products.
     async getItems() {
       this.isLoading = true;
     
@@ -97,15 +82,43 @@ const dblib = {
         this.isLoading = false;
       }
     },
+
+    async getFreeBox() {
+      try {
+        this.isLoading = true;
+        const response = await axios.get(`${this.database}/api/v1/check-free-box/`);
+        this.box = response.data;
+        return response.data;  // Return the data received from the endpoint
+      } catch (error) {
+        console.error('Error fetching product:', error);
+        // return {pid: 1, product: 'tshirt', image: 'https://picsum.photos/200', description: 'This is a description that is way too'};
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async createProduct(product) {
+      // const productId = product.pid;  // Assuming you have an 'id' property in your product data
+      try {
+        // Make an API request to submit the data
+        const response = await axios.post(`${this.database}/api/v1/create-product/`, {
+          box_uid: product.box_uid,
+          title: product.title, 
+          description: product.description,
+          get_image: product.get_image,
+        });
+        console.log(response.data.message);  // Log the server response
+          // Optionally, you can perform additional actions based on the response
+      } catch (error) {
+          console.error('Error deleting product:', error);
+          // Optionally, you can handle the error, show a message, etc.
+      }
+    },
     
     async deleteProduct(product) {
       // const productId = product.pid;  // Assuming you have an 'id' property in your product data
       try {
-        console.log('deleteProduct: box_id');
-        console.log(product);
-        console.log(product.box_id);
         const response = await axios.post(`${this.database}/api/v1/delete-product/`, { box_id: product.box_id });
-        console.log('made response');
         console.log(response.data.message);  // Log the server response
           // Optionally, you can perform additional actions based on the response
       } catch (error) {

@@ -6,7 +6,7 @@ urlpatterns = [
     path('latest-products/', views.LatestProductsList.as_view()),
     # path('createNew', views.enterProduct.as_view()),
     path('latest-products/<str:dbox_id>/', views.DBoxProductsList.as_view()),
-    path('api/create-product/', views.CreateProduct.as_view(), name='create_product'),
+    path('create-product/', views.CreateProduct.as_view(), name='create_product'),
     # path('products/<slug:item_slug>/<slug:product_slug>/', views.ProductDetail.as_view()),
     path('boxes/product/<slug:box_unique_id>/', views.ProductDetail.as_view(), name='product-detail'),
     

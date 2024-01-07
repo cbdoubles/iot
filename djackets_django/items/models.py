@@ -53,11 +53,11 @@ class Box(models.Model):
     
     #addProduct 
 class Product(models.Model):
-    unique_ID = models.CharField(max_length=100, null=True, blank=True, unique=True, default=uuid.uuid4())
-    box = models.OneToOneField(Box, default=None, on_delete=models.CASCADE)
+    # unique_ID = models.CharField(max_length=100, null=True, blank=True, unique=True, default=uuid.uuid4())
+    box = models.OneToOneField(Box, default=None, on_delete=models.CASCADE, unique=True)
     # category = models.ForeignKey(Category, related_name='items', on_delete=models.CASCADE, blank=True, null=True)
     title = models.TextField(verbose_name=("title"), help_text=("Required"), max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)
     description = models.TextField(verbose_name=("description"), help_text=("Not Required"), blank=True, null=True)
     #can be empty if you don't want a description for certain product
     image = models.ImageField(upload_to='uploads/', blank=True, null=True) #to make mandatory in future

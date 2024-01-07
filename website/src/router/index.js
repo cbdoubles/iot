@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import ShopView from '../views/ShopView.vue'
 import ProductView from '../views/ProductView.vue'
+import DonationView from '../views/DonationView.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/item/:pid',
     name: 'item',
     component: ProductView,
+  },
+  {
+    path: '/donate',
+    name: 'donate',
+    component: DonationView,
   },
   {
     path: '/about',

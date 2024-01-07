@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
-from .serializer import ItemSerializer #tell django what we will get from this model
+from .serializer import CreateItemSerializer, ItemSerializer #tell django what we will get from this model
 from .models import Product, DBox, Box, User
 
 #imports for Create Product
@@ -90,9 +90,9 @@ class DeleteProduct(APIView):
                 os.remove(product.thumbnail.path)  # Delete the thumbnail file
 
             # Delete the product and return confirmation
-            product.delete()
             box.isFree = True
             box.save()
+            product.delete()
             return Response({'message': 'Product deleted successfully'}, status=status.HTTP_200_OK)
 
 
@@ -116,15 +116,13 @@ class CreateProduct(APIView):
 
         # Automatically fill certain fields
         data['date_added'] = timezone.now()
-        data['slug'] = slugify(data['title'])
 
         # Assuming you have a serializer to validate and create the Product instance
-        serializer = ItemSerializer(data=data)
-
+        serializer = CreateItemSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
-            box_id = data.get('box_id')
-            box = Box.objects.get(id=box_id)
+            product_instance = serializer.save()
+            box = product_instance.box
+            
             box.isFree = False
             box.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
