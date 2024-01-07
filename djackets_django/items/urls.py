@@ -10,6 +10,9 @@ urlpatterns = [
     # path('products/<slug:item_slug>/<slug:product_slug>/', views.ProductDetail.as_view()),
     path('boxes/product/<slug:box_unique_id>/', views.ProductDetail.as_view(), name='product-detail'),
     
+    #communication with Arduino    
+    path('arduino-openlocker/', views.OpenLockerNum.as_view(), name='open-locker'),
+    
     #info received from tablet
     path('check-free-box/', views.CheckAvailableBox.as_view(), name='check_free_box'),
     path('delete-product/', views.DeleteProduct.as_view(), name='delete_product'),

@@ -109,6 +109,11 @@ class CheckAvailableBox(APIView):
         else:
             return Response({'unique_ID': None, 'box_num': -1}, status=status.HTTP_200_OK)
 
+class OpenLockerNum(APIView):
+    def get(self, request, format=None):
+        # Tell Arduino which locker to open
+        return Response({'box_num': -1}, status=status.HTTP_200_OK)
+
 class CreateProduct(APIView):
     def post(self, request, format=None):
         # Create product after receiving title, description, image, and box_id in the request data
