@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Category, Product, Box, DBox
+from .models import Category, Product, Box, DBox, User
 
 class ProductAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
@@ -27,3 +27,4 @@ admin.site.register(Category)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Box)
 admin.site.register(DBox)
+admin.site.register(User)

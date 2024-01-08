@@ -13,7 +13,7 @@ import uuid #to create uuid
 
 class User(models.Model):
     unique_ID = models.CharField(max_length=100, null=True, blank=True, unique=True, default=uuid.uuid4())
-    nfc_number = models.CharField(max_length=100, null=True, blank=True, unique=True, default=uuid.uuid4())
+    # nfc_number = models.CharField(max_length=100, null=True, blank=True, unique=True, default=uuid.uuid4())
     name = models.TextField(verbose_name=("title"), help_text=("Required"))
     products_taken = models.IntegerField(default=0)
     

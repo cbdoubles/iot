@@ -19,12 +19,12 @@ import os  # Import the os module to manage file operations when deleting photos
 
 ### TO BE IMPLEMENTED - view returning TRUE, FALSE for user ###
 
-class CheckUserExists(APIView):
+class VerifyLogin(APIView):
     def post(self, request, format=None):
-        nfc_number = request.data.get('nfc_number')
+        nfc_id = request.data.get('nfc_id')
 
         # Check if the given nfc_number exists in the database
-        user_exists = User.objects.filter(nfc_number=nfc_number).exists()
+        user_exists = User.objects.filter(unique_id=nfc_id).exists()
 
         return Response({user_exists}, status=status.HTTP_200_OK)
 
