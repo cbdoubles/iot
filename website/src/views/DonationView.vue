@@ -1,16 +1,16 @@
 <template>
     <div>
       <h1>Donation Page</h1>
-      <TextInput @form-submitted="handleFormSubmitted" />
+      <DonationInput @form-submitted="handleFormSubmitted" />
     </div>
   </template>
   
   <script>
-  import TextInput from '@/components/DonationInput.vue';
-  
+  import DonationInput from '@/components/DonationInput.vue';
+
   export default {
     components: {
-      TextInput,
+      DonationInput,
     },
     methods: {
       handleFormSubmitted(data) {

@@ -25,7 +25,7 @@
           setTimeout(() => {
             this.hidePopup();
             resolve(); // Resolve the promise after the timeout
-          }, 1000); // Hide after 4 seconds
+          }, 4000); // Hide after 4 seconds
         });
       },
       hidePopup() {

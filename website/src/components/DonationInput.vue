@@ -8,16 +8,36 @@
   
       <button @click="submitForm">Submit</button>
       <PopupBox ref="popupBox" />
+
+      <div class="hello">    
+    <picture-input 
+      ref="pictureInput"
+      width="600" 
+      height="600" 
+      margin="16" 
+      accept="image/jpeg,image/png" 
+      size="10" 
+      button-class="btn"
+      :custom-strings="{
+        upload: '<h1>Bummer!</h1>',
+        drag: 'Drag a 😺 GIF or GTFO'
+      }"
+      @change="onChange">
+    </picture-input>
+  </div>
     </div>
   </template>
   
   <script>
   import dblib from '@/dblib';
   import PopupBox from '@/components/PopupBox.vue';
+  import PictureInput from 'vue-picture-input'
+
   
   export default {
     components: {
         PopupBox,
+        PictureInput
     },
 
     data() {
@@ -61,6 +81,18 @@
           // Optionally, you can handle errors and show a message to the user
         }
       },
+
+      onChange (image) {
+      console.log('New picture selected!')
+      if (image) {
+        console.log('Picture loaded.')
+        this.image = image
+        this.get_image = image.data
+        console.log(this.get_image)
+      } else {
+        console.log('FileReader API not supported: use the <form>, Luke!')
+      }
+    },
 
       async showPopup(message) {
             // Access the showPopup method of the PopupBox component
