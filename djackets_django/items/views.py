@@ -22,9 +22,11 @@ import os  # Import the os module to manage file operations when deleting photos
 class VerifyLogin(APIView):
     def post(self, request, format=None):
         nfc_id = request.data.get('nfc_id')
+        print("got nfc id")
 
         # Check if the given nfc_number exists in the database
-        user_exists = User.objects.filter(unique_id=nfc_id).exists()
+        user_exists = User.objects.filter(unique_ID=nfc_id).exists()
+        print("users")
 
         return Response({user_exists}, status=status.HTTP_200_OK)
 

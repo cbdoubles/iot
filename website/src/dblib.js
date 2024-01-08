@@ -16,9 +16,7 @@ const dblib = {
     async login() {
       this.isLoading = true
       this.rfid = -1
-      console.log('getting RFID')
-      this.scanRFID()
-      console.log('checking uuid')
+      // this.scanRFID()
       this.verifyLogin()
       this.isLoading = false
     },
@@ -38,9 +36,9 @@ const dblib = {
     // Checks the uuid gotten from the arduino against database.
     // if valid user, go to the browse page.
     async verifyLogin() {
-      axios.get(this.database + '/api/v1/verify-login/', {nfc_id: this.rfid})
+      axios.post(this.database + '/api/v1/verify-login/', {nfc_id: this.rfid})
         .then(response => {
-          if (response.data) {
+          if (response.data[0]) {
             this.$router.push('/browse')
           } else {
             console.log('invalid uuid.')
