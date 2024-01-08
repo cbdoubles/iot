@@ -9,6 +9,7 @@ I had to install the following (maybe not needed again if already installed in v
  - pip install django-rest-framework
  - pip install django-cors-headers (helps with security).
  - pip install Djoser (helps with authentication)
+ - pip install pillow
 
 When you want to set up a superuser/ admin
  - py manage.py createsuperuser (to create superuser) 
