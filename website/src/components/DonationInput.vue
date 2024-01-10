@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    
+
     <form id="donationForm" @submit.prevent="console.log(form)">
       <label for="title">Title:</label>
       <input type="text" id="title" v-model="title" />
@@ -21,7 +21,8 @@
         </picture-input>
       </div>
     </form>
-</div></template>
+  </div>
+</template>
   
 <script>
 import dblib from '@/dblib';
@@ -51,23 +52,24 @@ export default {
   methods: {
     async submitForm() {
       try {
-        await this.showPopup(`Go to Box ${this.box_number} to donate your item. Thank you!`);
 
-        
         const formData = new FormData()
         formData.append('box_uid', this.box_id)
         formData.append('title', this.title)
         formData.append('description', this.description)
         formData.append('image', this.$refs.pictureInput.file)
         console.log(formData)
-        axios.post('http://127.0.0.1:8000/api/v1/create-product/', formData, {headers: {'Sec-Fetch-Site': 'same-origin'}})
+        axios.post('http://127.0.0.1:8000/api/v1/create-product/', formData)
+        .then(await this.showPopup(`Go to Box ${this.box_number} to donate your item. Thank you!`))
         // await this.createProduct({
         //   box_uid: this.box_id,
         //   title: this.title,
         //   description: this.description,
         //   get_image: this.$refs.pictureInput.file,
         // });
-        // this.$router.push({ path: `/login` });
+        if (this.$router.path == '/donate') {
+          this.$router.push({ path: `/login` });
+        }
 
         // Optionally, you can handle the response - uncomment
         // console.log('Server Response:', response.data);

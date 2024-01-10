@@ -13,6 +13,7 @@ from .models import Product, DBox, Box, User
 from django.utils import timezone
 from django.utils.text import slugify
 from rest_framework import status
+from django.core.files.storage import FileSystemStorage
 
 import os  # Import the os module to manage file operations when deleting photos
 
@@ -123,6 +124,13 @@ class CreateProduct(APIView):
 
         # Automatically fill certain fields
         data['date_added'] = timezone.now()
+
+        if request.FILES['image']:
+            image = request.FILES['image']
+            fs = FileSystemStorage()
+            filename = fs.save(image.name, image)
+            uploaded_file_url = fs.url(filename)
+            print('http://127.0.0.1:8000' + uploaded_file_url)
 
         # Assuming you have a serializer to validate and create the Product instance
         serializer = CreateItemSerializer(data=data)
