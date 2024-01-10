@@ -13,6 +13,10 @@ export default {
   name: 'HomeView',
   components: {
     HelloWorld
+  },
+
+  created() {
+    this.$router.push('/login')
   }
 }
 </script>

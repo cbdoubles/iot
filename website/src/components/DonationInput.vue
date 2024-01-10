@@ -13,7 +13,7 @@
       <PopupBox ref="popupBox" />
 
       <div class="hello">
-        <picture-input ref="pictureInput" width="600" height="600" margin="16" accept="image/jpeg,image/png" size="10"
+        <picture-input ref="pictureInput" width="600" height="600" margin="16" accept="image/jpeg, image/jpg" size="10"
           button-class="btn" :custom-strings="{
             upload: '<h1>Bummer!</h1>',
             drag: 'Drag a 😺 GIF or GTFO'
@@ -45,6 +45,7 @@ export default {
       box_id: '',
       box_number: 0,
       get_image: '',
+      defaultImg: require('@/assets/No-image.jpeg')
     };
   },
   mixins: [dblib],
@@ -57,19 +58,26 @@ export default {
         formData.append('box_uid', this.box_id)
         formData.append('title', this.title)
         formData.append('description', this.description)
-        formData.append('image', this.$refs.pictureInput.file)
+        if (this.$refs.pictureInput.file == null) {
+          formData.append('image',
+            await fetch(this.defaultImg)
+              .then(response => response.blob())
+              .then(blob => new File([blob], "default.jpeg"))
+          )
+        } else {
+          formData.append('image', this.$refs.pictureInput.file)
+        }
+
         console.log(formData)
         axios.post('http://127.0.0.1:8000/api/v1/create-product/', formData)
-        .then(await this.showPopup(`Go to Box ${this.box_number} to donate your item. Thank you!`))
+          .then(await this.showPopup(`Go to Box ${this.box_number} to donate your item. Thank you!`))
         // await this.createProduct({
         //   box_uid: this.box_id,
         //   title: this.title,
         //   description: this.description,
         //   get_image: this.$refs.pictureInput.file,
         // });
-        if (this.$router.path == '/donate') {
-          this.$router.push({ path: `/login` });
-        }
+        this.$router.push({ path: `/login` });
 
         // Optionally, you can handle the response - uncomment
         // console.log('Server Response:', response.data);
@@ -103,25 +111,6 @@ export default {
       // Access the showPopup method of the PopupBox component
       await this.$refs.popupBox.showPopup(message);
     },
-
-    getBase64Image(img) {
-      // Create an empty canvas element
-      var canvas = document.createElement("canvas");
-      canvas.width = img.width;
-      canvas.height = img.height;
-
-      // Copy the image contents to the canvas
-      var ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0);
-
-      // Get the data-URL formatted image
-      // Firefox supports PNG and JPEG. You could check img.src to
-      // guess the original format, but be aware the using "image/jpg"
-      // will re-encode the image.
-      var dataURL = canvas.toDataURL("image/png");
-
-      return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-    }
   },
 
   async created() {
