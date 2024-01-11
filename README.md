@@ -27,3 +27,31 @@ Website pages you can check:
  - http://127.0.0.1:8000/api/v1/check-free-box/
  - http://127.0.0.1:8000/api/v1/latest-products/1A/
  - http://127.0.0.1:8000/api/v1/boxes/1A2/product/
+
+
+# Website
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+The website is then accessible on port 8080
+
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -63,8 +63,8 @@ export default ({
 
     methods: {
         async takeProduct() {
-            await this.showPopup(`Go to Box ${this.product.box_number} to collect your item!`);
-            await this.deleteProduct(this.product);
+            await this.deleteProduct(this.product)
+            .then(await this.showPopup(`Go to Box ${this.product.box_number} to collect your item!`))
             this.$router.push({path: `/login`});
         },
 

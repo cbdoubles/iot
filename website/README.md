@@ -9,6 +9,8 @@ npm install
 ```
 npm run serve
 ```
+The website is then accessible on port 8080
+
 
 ### Compiles and minifies for production
 ```
