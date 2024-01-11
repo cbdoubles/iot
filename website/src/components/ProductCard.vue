@@ -20,9 +20,9 @@
             <!-- <router-link to="/item" class="column">
               <img src="../assets/shopping-cart-svgrepo-com.svg" alt="Shopping cart" class="icon"/>
             </router-link> -->
-            <router-link to="/" class="column">
+            <div @click="$emit('viewItem')" class="column">
               <img src="../assets/shopping-cart-svgrepo-com.svg" alt="Shopping cart" class="icon" />
-            </router-link>
+            </div>
           </div>
         </div>
       </div>

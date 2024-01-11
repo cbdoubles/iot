@@ -5,7 +5,7 @@ const dblib = {
     return {
       isLoading: false,
       rfid: -1,
-      arduino: 'http://192.168.178.157',
+      arduino: 'http://192.48.56.2',
       database: 'http://127.0.0.1:8000',
       // database: 'localhost:####',
       products: [],
@@ -14,10 +14,25 @@ const dblib = {
 
   methods: {
     async login() {
-      this.isLoading = true
-      this.rfid = -1
-      // this.scanRFID()
-      this.verifyLogin()
+      await axios.get(this.arduino + '/rfid')
+      .then(response => { 
+        axios.post(this.database + '/api/v1/verify-login/', {nfc_id: response.data})
+        .then(response => {
+          if (response.data[0]) {
+            this.$router.push('/browse')
+          } else {
+            this.$router.push('/login')
+          }
+        })
+        .catch(error => {
+          this.isLoading = false
+          console.log(error)
+        })
+        this.rfid = response })
+      .catch(error => {
+        this.isLoading = false
+        console.log(error)
+      })
       this.isLoading = false
     },
 
@@ -31,6 +46,19 @@ const dblib = {
           this.isLoading = false
           console.log(error)
         })
+    },
+
+    async sendBoxNumber(box) {
+      // const productId = product.pid;  // Assuming you have an 'id' property in your product data
+      try {
+        // Make an API request to submit the data
+        axios.post(`${this.arduino}/Locker/` + box)
+        .then (response => {console.log(response)})
+          // Optionally, you can perform additional actions based on the response
+      } catch (error) {
+          console.error('Error sending box number:', error);
+          // Optionally, you can handle the error, show a message, etc.
+      }
     },
 
     // Checks the uuid gotten from the arduino against database.

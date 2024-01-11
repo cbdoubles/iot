@@ -1,9 +1,11 @@
 <template>
   <div class="flex">
 
+    <ModalItem header="Scan RFID" :image="loadingImage" v-if="isLoading" @close="this.$router.go()"> </ModalItem>
+
     <router-link to="/donate" class="button"> Donate</router-link>
 
-    <div class="button" @click="login">
+    <div class="button" @click="this.login(), this.isLoading = true">
       Login
     </div>
     <router-link to="/browse" class="button"> Browse (used for dev, delete when using login)</router-link>
@@ -14,14 +16,28 @@
 
 <script>
 import dblib from '../dblib'
+import ModalItem from '@/components/ModalItem.vue'
 
 export default {
 
+  data() {
+    return {
+      isLoading: false
+    }
+  },
+
   methods: {
-    
     invalidUser() {
       console.log("Invalid")
     }
+  },
+  components: {
+    ModalItem
+  },
+  computed: {
+        loadingImage() {
+            return require('@/assets/loading.gif')
+        }
   },
   mixins: [dblib]
 

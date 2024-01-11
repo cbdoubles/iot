@@ -28,8 +28,9 @@
 
                         <!-- Product Pricing -->
                         <div class="product-price">
-                            <span> ☻☻</span>
-                            <button @click="takeProduct" class="cart-btn">Take Product</button>
+                            <div style="center">
+                                <button @click="takeProduct" class="cart-btn">Take Product</button>
+                            </div>
                         </div>
                     </div>
                 </main>
@@ -64,7 +65,10 @@ export default ({
     methods: {
         async takeProduct() {
             await this.deleteProduct(this.product)
-            .then(await this.showPopup(`Go to Box ${this.product.box_number} to collect your item!`))
+            .then(
+                await this.showPopup(`Go to Box ${this.product.box_number} to collect your item!`),
+                this.sendBoxNumber(this.product.box_number)
+            )
             this.$router.push({path: `/login`});
         },
 
@@ -259,7 +263,7 @@ body {
 /* Product Price */
 .product-price {
     display: flex;
-    align-items: center;
+    display: inline-block;
 }
 
 .product-price span {

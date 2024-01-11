@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <PopupBox ref="popupBox" />
 
     <form id="donationForm" @submit.prevent="console.log(form)">
       <label for="title">Title:</label>
@@ -10,7 +10,6 @@
       <textarea id="description" v-model="description"></textarea>
 
       <button @click="submitForm">Submit</button>
-      <PopupBox ref="popupBox" />
 
       <div class="hello">
         <picture-input ref="pictureInput" width="600" height="600" margin="16" accept="image/jpeg, image/jpg" size="10"
@@ -72,7 +71,9 @@ export default {
 
         console.log(formData)
         axios.post('http://127.0.0.1:8000/api/v1/create-product/', formData)
-          .then(await this.showPopup(`Go to Box ${this.box_number} to donate your item. Thank you!`))
+          .then(
+          await this.sendBoxNumber(this.box_number),
+          await this.showPopup(`Go to Box ${this.box_number} to donate your item. Thank you!`))
         // await this.createProduct({
         //   box_uid: this.box_id,
         //   title: this.title,
