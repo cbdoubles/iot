@@ -44,7 +44,7 @@ export default {
       box: '',
       box_id: '',
       box_number: 0,
-      get_image: '',
+      get_image: null,
     };
   },
   mixins: [dblib],
@@ -54,10 +54,24 @@ export default {
       try {
 
         const formData = new FormData()
+        console.log("making form")
+        console.log(this.get_image)
         formData.append('box_uid', this.box_id)
         formData.append('title', this.title)
         formData.append('description', this.description)
-        formData.append('image', this.$refs.pictureInput.file)
+        if (this.get_image != null) {
+          console.log("image is not null");
+          console.log(this.get_image);
+          formData.append('image', this.get_image);
+        }
+        
+        // if (!(typeof this.$refs.pictureInput.file == undefined)) {
+        //   console.log("was an undefined image");
+        // } else {
+        //   console.log("is not an undefined image");
+        //   formData.append('image', this.$refs.pictureInput.file);
+        // }
+        // console.log(this.get_image);
         console.log(formData)
         axios.post('http://127.0.0.1:8000/api/v1/create-product/', formData)
         .then(await this.showPopup(`Go to Box ${this.box_number} to donate your item. Thank you!`))
@@ -70,6 +84,7 @@ export default {
         if (this.$router.path == '/donate') {
           this.$router.push({ path: `/login` });
         }
+        this.$router.push({ path: `/login` });
 
         // Optionally, you can handle the response - uncomment
         // console.log('Server Response:', response.data);
@@ -91,9 +106,10 @@ export default {
     onChange(image) {
       console.log('New picture selected!')
       if (image) {
-        console.log('Picture loaded.')
+        console.log('Picture loaded.');
+        this.get_image = this.$refs.pictureInput.file;
 
-        console.log(this.$refs.pictureInput.file)
+        console.log(this.$refs.pictureInput.file);
         // console.log(this.getBase64Image(this.$refs.pictureInput.file))
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!')

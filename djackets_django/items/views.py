@@ -121,26 +121,20 @@ class CreateProduct(APIView):
     def post(self, request, format=None):
         # Create product after receiving title, description, image, and box_id in the request data
         data = request.data
-
-        # Automatically fill certain fields
-        data['date_added'] = timezone.now()
-
-        if request.FILES['image']:
-            image = request.FILES['image']
-            fs = FileSystemStorage()
-            filename = fs.save(image.name, image)
-            uploaded_file_url = fs.url(filename)
-            print('http://127.0.0.1:8000' + uploaded_file_url)
+        print(data)
 
         # Assuming you have a serializer to validate and create the Product instance
         serializer = CreateItemSerializer(data=data)
+        print("entering serialiser is valid")
         if serializer.is_valid():
+            print("in serialiser")
             product_instance = serializer.save()
             box = product_instance.box
             
             box.isFree = False
             box.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

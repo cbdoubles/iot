@@ -30,17 +30,17 @@ class CreateItemSerializer(serializers.ModelSerializer):
             "box_uid",
             "title",
             "description",
-            "get_image",
+            "image",
         )
 
     def create(self, validated_data):
         # Extract and remove 'box_uid' from validated_data
+        print("creating serializer")
         box_uid = validated_data.pop('box_uid')
 
         # Get the Box instance using the unique_ID
         box = Box.objects.get(unique_ID=box_uid)
-
-        # Create the Product instance with the associated Box
+        
         product = Product.objects.create(box=box, **validated_data)
 
         return product
