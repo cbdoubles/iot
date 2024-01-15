@@ -167,8 +167,8 @@ void HandleClient(){
 
         if (currentLine.endsWith("GET /rfid")) {
           Serial.println("test");
-          long startTimer = time.time();
-          while (!getID() && !(time.time() - startTimer > 6000);
+          long startTimer = millis();
+          while (!getID() && !(millis() - startTimer > 6000);
           client.println("HTTP/1.1 200 RFID");
           client.println("Content-type:text/html");
           client.println("Access-Control-Allow-Origin: *");
