@@ -1,11 +1,14 @@
 <template>
   <div class="flex">
 
-    <ModalItem header="Scan RFID" :image="loadingImage" v-if="isLoading" @close="this.$router.go()"> </ModalItem>
+    <ModalItem header="Scan RFID" :image="loadingImage" v-if="isLoading" @close="this.abort()"> </ModalItem>
 
     <router-link to="/donate" class="button"> Donate</router-link>
 
-    <div class="button" @click="this.login(), this.isLoading = true">
+    <!-- <div class="button" @click="this.login(), this.isLoading = true">
+      Login
+    </div> -->
+    <div class="button" @click="this.login(this.controller), this.isLoading = true">
       Login
     </div>
     <router-link to="/browse" class="button"> Browse (used for dev, delete when using login)</router-link>
@@ -22,22 +25,31 @@ export default {
 
   data() {
     return {
-      isLoading: false
+      isLoading: false,
+      request: null,
     }
   },
 
   methods: {
     invalidUser() {
       console.log("Invalid")
-    }
+    },
+    async abort() {
+      this.controller.abort()
+      this.$router.go()
+    },
   },
+
   components: {
     ModalItem
   },
   computed: {
-        loadingImage() {
-            return require('@/assets/loading.gif')
-        }
+    loadingImage() {
+      return require('@/assets/loading.gif')
+    },
+    controller() {
+      return new AbortController();
+    }
   },
   mixins: [dblib]
 

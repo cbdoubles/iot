@@ -2,24 +2,25 @@
   <div>
     <PopupBox ref="popupBox" />
 
-    <form id="donationForm" @submit.prevent="console.log(form)">
+    <div class="form">
+    <form id="donationForm" @submit.prevent="submitForm">
       <label for="title">Title:</label>
-      <input type="text" id="title" v-model="title" />
+      <input type="text" id="title" v-model="title" required/>
 
       <label for="description">Description:</label>
       <textarea id="description" v-model="description"></textarea>
 
-      <button @click="submitForm">Submit</button>
-
-      <div class="hello">
         <picture-input ref="pictureInput" width="600" height="600" margin="16" accept="image/jpeg, image/jpg" size="10"
           button-class="btn" :custom-strings="{
             upload: '<h1>Your device does not support file uploading.</h1>',
             drag: 'Drag an image or <br>click here to select a file'
           }" @change="onChange">
         </picture-input>
-      </div>
+        
+        <input type="submit" value="Send"/>
+      <!-- <button @click="submitForm">Submit</button> -->
     </form>
+  </div>
   </div>
 </template>
   
@@ -70,7 +71,7 @@ export default {
         }
 
         console.log(formData)
-        axios.post('http://127.0.0.1:8000/api/v1/create-product/', formData)
+        axios.post(this.database + '/api/v1/create-product/', formData)
           .then(
           await this.sendBoxNumber(this.box_number),
           await this.showPopup(`Go to Box ${this.box_number} to donate your item. Thank you!`))
@@ -142,6 +143,82 @@ export default {
 </script>
   
 <style scoped>
-/* Add styling if needed */
+form{
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 400px;
+	margin: 10px auto;
+	padding: 16px;
+	background: #F7F7F7;
+}
+form h1{
+	background: #43D1AF;
+	padding: 20px 0;
+	font-size: 140%;
+	font-weight: 300;
+	text-align: center;
+	color: #fff;
+	margin: -16px -16px 16px -16px;
+}
+form input[type="text"],
+form input[type="date"],
+form input[type="datetime"],
+form input[type="email"],
+form input[type="number"],
+form input[type="search"],
+form input[type="time"],
+form input[type="url"],
+form textarea,
+form select 
+{
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	-ms-transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	background: #fff;
+	margin-bottom: 4%;
+	border: 1px solid #ccc;
+	padding: 3%;
+	color: #555;
+	font: 95% Arial, Helvetica, sans-serif;
+}
+form input[type="text"]:focus,
+form input[type="date"]:focus,
+form input[type="datetime"]:focus,
+form input[type="email"]:focus,
+form input[type="number"]:focus,
+form input[type="search"]:focus,
+form input[type="time"]:focus,
+form input[type="url"]:focus,
+form textarea:focus,
+form select:focus
+{
+	box-shadow: 0 0 5px #43D1AF;
+	padding: 3%;
+	border: 1px solid #43D1AF;
+}
+
+form input[type="submit"],
+form input[type="button"]{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	padding: 3%;
+	background: #43D1AF;
+	border-bottom: 2px solid #30C29E;
+	border-top-style: none;
+	border-right-style: none;
+	border-left-style: none;	
+	color: #fff;
+}
+form input[type="submit"]:hover,
+form input[type="button"]:hover{
+	background: #2EBC99;
+}
 </style>
   

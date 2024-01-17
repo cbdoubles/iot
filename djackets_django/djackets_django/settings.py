@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-rn5x_97e2fhs_(2lm!n-mu$$_0db+%t6$8$=l*--pn@k!s@9a8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '192.168.137.245'
+]
 
 
 # Application definition
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     
     'rest_framework',
     'rest_framework.authtoken',
@@ -46,6 +49,8 @@ INSTALLED_APPS = [
     'items',
     
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080", #address to the frontend, will need to be changed to live server address

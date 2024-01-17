@@ -6,7 +6,9 @@ from django.core.files import File #import so it is easier to correct thumbnails
 
 from io import BytesIO ## these two are to deal with pictures
 from PIL import Image
+from django.contrib.sites.models import Site
 import uuid #to create uuid
+
 
 
 ### USER DATABASE ###
@@ -80,17 +82,17 @@ class Product(models.Model):
     
     def get_image(self):
         if self.image:
-            return 'http://127.0.0.1:8000' + self.image.url #return whole address so easier to use in frontend
+            return 'http://192.168.137.245:8000' + self.image.url #return whole address so easier to use in frontend
         return '' # return empty string if no image
     
     def get_thumbnail(self):
         if self.thumbnail:
-            return 'http://127.0.0.1:8000' + self.thumbnail.url #return url of thumbnail to use in frontend
+            return 'http://192.168.137.245:8000' + self.thumbnail.url #return url of thumbnail to use in frontend
         else:
             if self.image:
                 self.thumbnail = self.make_thumbnail(self.image) #if have image, pass in image to thumbnail if one doesn't exist already
                 self.save() #so that it is saved in the database
-                return 'http://127.0.0.1:8000' + self.thumbnail.url
+                return 'http://192.168.137.245:8000' + self.thumbnail.url
             return '' # return empty string if no image
         
     def make_thumbnail(self, image, size=(300,200)): #setting thumbnail to image
