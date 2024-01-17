@@ -31,6 +31,9 @@ Website pages you can check:
 
 # Website
 
+## Setting IP adress
+Be sure to change the ip adresses to the correct ones in dblib
+
 ## Project setup
 ```
 npm install
