@@ -5,7 +5,7 @@ const dblib = {
     return {
       isLoading: false,
       rfid: -1,
-      arduino: 'http://192.168.137.156',
+      arduino: 'http://192.168.137.198',
       // database: 'http://127.0.0.1:8000',
       database: 'http://192.168.137.245:8000',
       // database: 'localhost:####',
@@ -15,7 +15,7 @@ const dblib = {
 
   methods: {
     async login(controller) {
-      await axios.get(this.arduino + '/rfid', { signal: controller.signal, timeout: 5000 })
+      await axios.get(this.arduino + '/rfid', { signal: controller.signal, timeout: 10000 })
       .then(response => { 
         axios.post(this.database + '/api/v1/verify-login/', {nfc_id: response.data})
         .then(response => {

@@ -11,7 +11,6 @@
     <div class="button" @click="this.login(this.controller), this.isLoading = true">
       Login
     </div>
-    <router-link to="/browse" class="button"> Browse (used for dev, delete when using login)</router-link>
 
 
   </div>
@@ -82,7 +81,7 @@ export default {
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
-  padding-left: 25%;
-  padding-bottom: 35%;
+  padding-left: 35%;
+  padding-bottom: 60%;
 }
 </style>../dblib
